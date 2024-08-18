@@ -2,11 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class GridGenerator extends JPanel {
     private final static int sell_size = 1;
-    private String filename;
-    private String data;
-    private BufferedImage image;
+    private final String filename;
+    private final BufferedImage image;
+    private static final Logger logger = Logger.getLogger(GridGenerator.class.getName());
+
     GridGenerator(String filename) {
         this.filename = filename;
         this.image = createImage();
@@ -18,7 +22,7 @@ public class GridGenerator extends JPanel {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             for (int y = 0; y < 1000; y += sell_size) {
-                    data = reader.readLine();
+                String data = reader.readLine();
                 for (int x = 0; x < 1000; x += sell_size) {
                     if (data.charAt(i) == '1') {
                         g.setColor(Color.GREEN);
@@ -42,7 +46,7 @@ public class GridGenerator extends JPanel {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.parse("An error occurred: {}"), e.getMessage(), e);
         }
         return grid;
     }
